@@ -9,6 +9,7 @@ import Sidebar from './Sidebar';
 import Setting from './Setting';
 import Portals from '../../components/Portals';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
     const router = useRouter();
@@ -66,6 +67,13 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
                 {/* screen loader  */}
                 {showLoader && (
                     <div className="screen_loader animate__animated fixed inset-0 z-[60] grid place-content-center bg-[#fafafa] dark:bg-[#060818]">
+                        <Link href="/" className="main-logo flex shrink-0 items-center">
+                            <img className="inline h-[50px] w-[50px] ltr:-ml-1 rtl:-mr-1" src="/assets/images/logo.svg" alt="logo" />
+                            <span className="flex flex-col items-center justify-center">
+                                <span className=" align-middle text-base  font-black  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">BLACK ROYAL</span>
+                                <span className="font-base align-middle  text-[10px]  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">ASIAN KITCHEN</span>
+                            </span>
+                        </Link>
                         <svg width="64" height="64" viewBox="0 0 135 135" xmlns="http://www.w3.org/2000/svg" fill="#4361ee">
                             <path d="M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z">
                                 <animateTransform attributeName="transform" type="rotate" from="0 67 67" to="-360 67 67" dur="2.5s" repeatCount="indefinite" />

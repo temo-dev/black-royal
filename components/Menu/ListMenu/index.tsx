@@ -13,8 +13,8 @@ const ListMenu = () => {
                 slideSize={{ base: '40%', xs: '20%', sm: '20%', md: '15%', lg: '15%', xl: '10%' }}
                 slideGap={{ base: 0, sm: 'md' }}
                 loop
+                dragFree
                 align="center"
-                slidesToScroll={1}
                 initialSlide={3}
                 nextControlIcon={<IconArrowRight style={{ width: rem(30), height: rem(30) }} />}
                 previousControlIcon={<IconArrowLeft style={{ width: rem(30), height: rem(30) }} />}

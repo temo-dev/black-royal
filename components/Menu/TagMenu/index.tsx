@@ -6,7 +6,7 @@ import React from 'react';
 const TagMenu = () => {
     return (
         <div className="my-5">
-            <Carousel slideSize="auto" slideGap={{ base: 10, sm: 'md' }} loop align="start" withIndicators={false} withControls={false} dragFree>
+            <Carousel slideSize="auto" slideGap={{ base: 10, sm: 'md' }} align="start" withIndicators={false} withControls={false} dragFree>
                 <Carousel.Slide>
                     <Button
                         variant="outline"
