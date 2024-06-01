@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuCard from '../MenuCard';
 import { Carousel } from '@mantine/carousel';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 import { rem } from '@mantine/core';
 import classes from './ListMenu.module.css';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../../store';
+import { MenuTypes } from '../../../types/bristo';
+
 const ListMenu = () => {
+    const bristoConfig = useSelector((state: IRootState) => state.bristoConfig);
+    const [menu, setMenu] = useState<MenuTypes[]>([]);
+    useEffect(() => {
+        setMenu(bristoConfig.localMenus);
+    }, [bristoConfig.localMenus]);
+
     return (
         <div className="mt-10 max-w-[100vw] bg-slate-50">
             <Carousel
@@ -14,14 +24,14 @@ const ListMenu = () => {
                 slideGap={{ base: 0, sm: 'md' }}
                 loop
                 dragFree
-                align="center"
-                initialSlide={3}
+                align="start"
+                initialSlide={1}
                 nextControlIcon={<IconArrowRight style={{ width: rem(30), height: rem(30) }} />}
                 previousControlIcon={<IconArrowLeft style={{ width: rem(30), height: rem(30) }} />}
             >
-                {[1, 2, 3, 4, , 6, 7, 8, 9].map((i) => (
-                    <Carousel.Slide key={i}>
-                        <MenuCard />
+                {menu.map((menu) => (
+                    <Carousel.Slide key={menu.id}>
+                        <MenuCard menu={menu} />
                     </Carousel.Slide>
                 ))}
             </Carousel>

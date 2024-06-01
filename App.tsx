@@ -6,7 +6,7 @@ import { IRootState } from './store';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { setLocalMenu } from './store/bristoSlice';
+import { changeMenuByLanguage, setLocalMenu } from './store/bristoSlice';
 
 const fetchMenu = async () => {
     const res = await axios.get('https://cms-hakasu.onrender.com/api/get-all-menu');
@@ -35,8 +35,9 @@ function App({ children }: PropsWithChildren) {
 
     useEffect(() => {
         if (isLoading === false && data?.length > 0) {
-            console.log('data-menu', data);
+            const locale = localStorage.getItem('i18nextLng') || themeConfig.locale;
             dispatch(setLocalMenu(data));
+            dispatch(changeMenuByLanguage(locale));
         }
     }, [isLoading]);
 

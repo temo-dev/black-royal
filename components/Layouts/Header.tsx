@@ -6,6 +6,7 @@ import { IRootState } from '../../store';
 import { toggleLocale, toggleRTL } from '../../store/themeConfigSlice';
 import { useTranslation } from 'react-i18next';
 import Dropdown from '../Dropdown';
+import { changeMenuByLanguage } from '../../store/bristoSlice';
 
 const Header = () => {
     const router = useRouter();
@@ -318,6 +319,7 @@ const Header = () => {
                                                         dispatch(toggleLocale(item.code));
                                                         i18n.changeLanguage(item.code);
                                                         setLocale(item.code);
+                                                        dispatch(changeMenuByLanguage(item.code));
                                                     }}
                                                 >
                                                     <img src={`/assets/images/flags/${item.code.toUpperCase()}.svg`} alt="flag" className="h-5 w-5 rounded-full object-cover" />
