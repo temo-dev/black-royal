@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from './store';
-import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
+import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark, toggleLoading } from './store/themeConfigSlice';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { changeMenuByLanguage, setLocalMenu } from './store/bristoSlice';
@@ -38,6 +38,7 @@ function App({ children }: PropsWithChildren) {
             const locale = localStorage.getItem('i18nextLng') || themeConfig.locale;
             dispatch(setLocalMenu(data));
             dispatch(changeMenuByLanguage(locale));
+            dispatch(toggleLoading());
         }
     }, [isLoading]);
 
