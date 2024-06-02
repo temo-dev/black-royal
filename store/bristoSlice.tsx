@@ -1,18 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { MenuTypes } from '../types/bristo';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { BillingOrder, MenuTypes } from '../types/bristo';
 
 interface initialTypes {
     localMenus: MenuTypes[];
+    countNumberOrder: number;
+    codeOrder: string;
+    currentOrder: BillingOrder | null;
+    totalItems: number;
 }
 
 const initialState: initialTypes = {
     localMenus: [],
+    countNumberOrder: 0,
+    codeOrder: 'to-go',
+    currentOrder: null,
+    totalItems: 0,
 };
 
 const bristoConfigSlice = createSlice({
     name: 'bristo',
     initialState: initialState,
     reducers: {
+        setCurrentOrder(state, action: PayloadAction<BillingOrder>) {
+            state.currentOrder = action.payload;
+            state.totalItems = action.payload.quantity;
+        },
         setLocalMenu(state, { payload }) {
             localStorage.setItem('localMenus', JSON.stringify(payload));
         },
@@ -36,6 +48,6 @@ const bristoConfigSlice = createSlice({
     },
 });
 
-export const { setLocalMenu, changeMenuByLanguage } = bristoConfigSlice.actions;
+export const { setCurrentOrder, setLocalMenu, changeMenuByLanguage } = bristoConfigSlice.actions;
 
 export default bristoConfigSlice.reducer;
