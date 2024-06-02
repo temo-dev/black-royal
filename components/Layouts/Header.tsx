@@ -7,18 +7,22 @@ import { IRootState } from '../../store';
 import { toggleLocale, toggleRTL } from '../../store/themeConfigSlice';
 import { useTranslation } from 'react-i18next';
 import Dropdown from '../Dropdown';
-import { changeMenuByLanguage, setCurrentOrder } from '../../store/bristoSlice';
-import { ActionIcon, Box, Button, Drawer, Image, Indicator, NumberInput, ScrollArea, Stack, Table, rem } from '@mantine/core';
-import { IconBasketFilled, IconCashBanknoteFilled } from '@tabler/icons-react';
+import { changeMenuByLanguage, resetCurrentOrder, setCurrentOrder } from '../../store/bristoSlice';
+import { ActionIcon, Button, Drawer, Group, Image, Indicator, Modal, ScrollArea, Stack, Table, rem } from '@mantine/core';
+import { IconBasketFilled, IconCashBanknoteFilled, IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { BillingOrder, FoodOrderTypes } from '../../types/bristo';
+import QRCode from 'react-qr-code';
+import Thankyou from '../container/Thankyou';
 
 const Header = () => {
     const router = useRouter();
     const bristoConfig = useSelector((state: IRootState) => state.bristoConfig);
     const [listOrdered, drawedListOrdered] = useDisclosure(false);
+    const [paymentModelOpened, paymentModel] = useDisclosure(false);
+    const [paymentDoneOpend, paymentDone] = useDisclosure(false);
     const [quantity, setQuantity] = useState<number>(0);
-    const [order, setOrder] = useState<BillingOrder>();
+    const [order, setOrder] = useState<BillingOrder | null>(null);
 
     useEffect(() => {
         if (bristoConfig.currentOrder) {
@@ -92,6 +96,15 @@ const Header = () => {
         }
     };
 
+    const hanldeOrderDone = () => {
+        paymentModel.close();
+        drawedListOrdered.close();
+        dispatch(resetCurrentOrder());
+        setOrder(null);
+        setQuantity(0);
+        paymentDone.open();
+    };
+
     return (
         <>
             <header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
@@ -101,8 +114,10 @@ const Header = () => {
                             <Link href="/" className="main-logo flex shrink-0 items-center">
                                 <img className="inline h-[50px] w-[50px] ltr:-ml-1 rtl:-mr-1" src="/assets/images/logo.svg" alt="logo" />
                                 <span className="flex flex-col items-center justify-center">
-                                    <span className=" align-middle text-base  font-black  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">BLACK ROYAL</span>
-                                    <span className="font-base align-middle  text-[10px]  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">ASIAN KITCHEN</span>
+                                    <span className=" align-middle text-base  font-black  text-green-700 transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">NIKA</span>
+                                    <span className="font-base align-middle  text-[10px]  text-green-700 transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">
+                                        Coffe and Tea
+                                    </span>
                                 </span>
                             </Link>
                         </div>
@@ -204,11 +219,66 @@ const Header = () => {
                         variant="filled"
                         className="bg-orange-400 text-lg font-bold hover:bg-orange-700"
                         leftSection={<IconCashBanknoteFilled style={{ width: rem(36), height: rem(36) }} />}
+                        onClick={paymentModel.open}
                     >
                         Pay
                     </Button>
                 </Stack>
             </Drawer>
+            <Modal opened={paymentModelOpened} onClose={paymentModel.close} title={<h1 className=" text-lg font-bold capitalize">Pay by QRCode</h1>}>
+                <Stack justify="space-between" align="center">
+                    <QRCode value={`SPD*1.0*ACC:CZ7201000001158044580277*AM:${order?.total}*CC:CZK*PT:IP*MSG:NIKA_COFFEE: Order Numbder:${order?.id}*`} />
+                    {/* <Group>
+                        <Button
+                            variant="filled"
+                            className="bg-orange-400 text-base font-bold hover:bg-orange-700"
+                            leftSection={<IconCardsFilled style={{ width: rem(20), height: rem(20) }} />}
+                            onClick={paymentModel.open}
+                        >
+                            Pay Card
+                        </Button>
+                        <Button
+                            variant="filled"
+                            className="bg-orange-400 text-base  font-bold hover:bg-orange-700"
+                            leftSection={<IconCashBanknoteFilled style={{ width: rem(20), height: rem(20) }} />}
+                            onClick={paymentModel.open}
+                        >
+                            Pay Cash
+                        </Button>
+                    </Group> */}
+                    <Group>
+                        <Button
+                            variant="filled"
+                            className="btn-danger text-base font-bold hover:bg-orange-700"
+                            leftSection={<IconCircleXFilled style={{ width: rem(20), height: rem(20) }} />}
+                            onClick={paymentModel.close}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="filled"
+                            className="btn-success font-bol text-base hover:bg-green-900"
+                            leftSection={<IconCircleCheckFilled style={{ width: rem(20), height: rem(20) }} />}
+                            onClick={hanldeOrderDone}
+                        >
+                            QRCode Done
+                        </Button>
+                    </Group>
+                </Stack>
+            </Modal>
+            <Modal opened={paymentDoneOpend} onClose={paymentDone.close} title={<h1 className=" text-lg font-bold capitalize">Thank You For Your Order !</h1>} radius="md">
+                <Stack>
+                    <Thankyou clientOrder={order} />
+                    <Button
+                        variant="filled"
+                        className="btn-success font-bol text-base hover:bg-green-900"
+                        leftSection={<IconCircleCheckFilled style={{ width: rem(20), height: rem(20) }} />}
+                        onClick={paymentDone.close}
+                    >
+                        Confirm
+                    </Button>
+                </Stack>
+            </Modal>
         </>
     );
 };

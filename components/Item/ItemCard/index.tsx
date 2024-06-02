@@ -115,7 +115,15 @@ const ItemCard = (props: ItemCardProps) => {
                                 {dataOptions
                                     .filter((option) => option.type_of_option === 'size')
                                     .map((option) => (
-                                        <Checkbox color="orange" iconColor="dark.8" size="md" label={option.option_name} key={option.id} />
+                                        <Checkbox
+                                            color="orange"
+                                            iconColor="dark.8"
+                                            size="md"
+                                            label={option.option_name}
+                                            key={option.id}
+                                            disabled={option.option_name !== '500ml'}
+                                            defaultChecked={option.option_name === '500ml'}
+                                        />
                                     ))}
                             </div>
                         </div>
@@ -125,7 +133,7 @@ const ItemCard = (props: ItemCardProps) => {
                         <div className="inline-flex">
                             <button
                                 type="button"
-                                className="flex items-center justify-center border border-r-0 border-orange-300 bg-orange-300 px-3 font-semibold text-white ltr:rounded-l-md rtl:rounded-r-md"
+                                className="flex items-center justify-center border border-r-0 border-orange-300 bg-orange-300 px-3 font-semibold text-white hover:bg-orange-700 ltr:rounded-l-md rtl:rounded-r-md"
                                 onClick={() => setQuantity(quantity - 1)}
                             >
                                 -
@@ -133,13 +141,13 @@ const ItemCard = (props: ItemCardProps) => {
                             <input type="number" placeholder={`${quantity}`} className="form-input rounded-none text-center" min="0" max="25" readOnly value={quantity} />
                             <button
                                 type="button"
-                                className="flex items-center justify-center border border-l-0 border-orange-300 bg-orange-300 px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
+                                className="flex items-center justify-center border border-l-0 border-orange-300 bg-orange-300 px-3 font-semibold text-white hover:bg-orange-700 ltr:rounded-r-md rtl:rounded-l-md"
                                 onClick={() => setQuantity(quantity + 1)}
                             >
                                 +
                             </button>
                         </div>
-                        <button type="button" className="btn btn-warning border-orange-300 bg-orange-300" onClick={handleBillingOrder}>
+                        <button type="button" className="btn btn-warning border-orange-300 bg-orange-300 hover:bg-orange-700" onClick={handleBillingOrder}>
                             <span>Add Items</span> <IconSquareRoundedPlusFilled className="ml-2" />
                         </button>
                     </Group>

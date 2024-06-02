@@ -38,7 +38,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
             <MantineProvider theme={theme}>
                 <Provider store={store}>
                     <Head>
-                        <title>Black Royal - Asian Kitchen</title>
+                        <title>Nika Coffee and Tea</title>
                         <meta charSet="UTF-8" />
                         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
                         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -10,8 +10,8 @@ const Footer = () => {
                     <Link href="/" className="main-logo flex shrink-0 items-center">
                         <img className="inline h-[50px] w-[50px] ltr:-ml-1 rtl:-mr-1" src="/assets/images/logo.svg" alt="logo" />
                         <span className="flex flex-col items-center justify-center">
-                            <span className=" align-middle text-base  font-black  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">BLACK ROYAL</span>
-                            <span className="font-base align-middle  text-[10px]  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">ASIAN KITCHEN</span>
+                            <span className=" align-middle text-base  font-black  text-green-700 transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">NIKA</span>
+                            <span className="font-base align-middle  text-[10px]  text-green-700 transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">Cofee and Tea</span>
                         </span>
                     </Link>
                     <Group gap={0} className={classes.links} justify="flex-end" wrap="nowrap">

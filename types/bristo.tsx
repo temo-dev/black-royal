@@ -58,12 +58,4 @@ export class BillingOrder {
         this.total = this.total + foodOrder.quantity * foodOrder.food.price;
         this.totalQuantity = this.totalQuantity + foodOrder.quantity;
     }
-
-    updateFood(foodOrder: FoodOrderTypes): void {
-        this.foods.map((item) => {
-            if (item.food.id === foodOrder.food.id) {
-                item.food = foodOrder.food;
-            }
-        });
-    }
 }

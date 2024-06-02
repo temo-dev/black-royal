@@ -21,6 +21,10 @@ const bristoConfigSlice = createSlice({
     name: 'bristo',
     initialState: initialState,
     reducers: {
+        resetCurrentOrder(state) {
+            state.currentOrder = null;
+            state.totalItems = 0;
+        },
         setCurrentOrder(state, action: PayloadAction<BillingOrder>) {
             state.currentOrder = action.payload;
             state.totalItems = action.payload.totalQuantity;
@@ -48,6 +52,6 @@ const bristoConfigSlice = createSlice({
     },
 });
 
-export const { setCurrentOrder, setLocalMenu, changeMenuByLanguage } = bristoConfigSlice.actions;
+export const { resetCurrentOrder, setCurrentOrder, setLocalMenu, changeMenuByLanguage } = bristoConfigSlice.actions;
 
 export default bristoConfigSlice.reducer;

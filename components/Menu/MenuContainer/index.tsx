@@ -13,7 +13,7 @@ const MenuContainer = (props: MenuContainerProps) => {
     const { menu } = props;
     return (
         <div className="mt-10" id={`menu-${menu.id}`}>
-            <h1 className="text-2xl font-black  capitalize md:text-5xl">{menu.name_menu}</h1>
+            <h1 className="text-2xl font-black  capitalize text-green-700 md:text-5xl">{menu.name_menu}</h1>
             <TagMenu />
             <Grid justify="center" align="flex-start" gutter="md">
                 {menu.foods.map((item) => (
