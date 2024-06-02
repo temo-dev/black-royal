@@ -17,9 +17,8 @@ const Header = () => {
     const router = useRouter();
     const bristoConfig = useSelector((state: IRootState) => state.bristoConfig);
     const [listOrdered, drawedListOrdered] = useDisclosure(false);
-    const [quantity, setQuantity] = useState<number | null>(null);
+    const [quantity, setQuantity] = useState<number>(0);
     const [order, setOrder] = useState<BillingOrder>();
-    console.log('order====', order);
 
     useEffect(() => {
         if (bristoConfig.currentOrder) {
@@ -75,11 +74,20 @@ const Header = () => {
 
     const { t, i18n } = useTranslation();
 
-    const handleChangeQuantity = (e: string | number, item: FoodOrderTypes) => {
-        console.log('handleChangeQuantity', e, item);
+    const handlePlusQuantity = (e: number, item: FoodOrderTypes) => {
         if (order) {
-            item.quantity = Number(e);
-            order.updateFood(item);
+            item.quantity += 1;
+            order.totalQuantity += 1;
+            order.total += item.food.price * e;
+            dispatch(setCurrentOrder(order));
+        }
+    };
+
+    const handleReduceQuantity = (e: number, item: FoodOrderTypes) => {
+        if (order && item.quantity > 1) {
+            item.quantity -= 1;
+            order.totalQuantity -= 1;
+            order.total -= item.food.price * e;
             dispatch(setCurrentOrder(order));
         }
     };
@@ -144,7 +152,7 @@ const Header = () => {
             <Drawer opened={listOrdered} onClose={drawedListOrdered.close} title={<h1 className=" text-lg font-bold capitalize">your order</h1>}>
                 <Stack justify="space-between" className="h-[calc(100vh_-_80px)]">
                     <ScrollArea h={600} scrollbars="y">
-                        <Table stickyHeader verticalSpacing="md" className="capitalize" striped highlightOnHover>
+                        <Table stickyHeader verticalSpacing="xs" className="capitalize" striped highlightOnHover>
                             <Table.Thead>
                                 <Table.Tr className="bg-white">
                                     <Table.Th>id</Table.Th>
@@ -157,21 +165,40 @@ const Header = () => {
                             <Table.Tbody>
                                 {order?.foods.map((item) => (
                                     <Table.Tr key={item.food.id}>
-                                        <Table.Td>{item.food.id}</Table.Td>
+                                        <Table.Td>#{item.food.id}</Table.Td>
                                         <Table.Td>
-                                            <Image src={item.food.image} w={40} h="auto" fit="cover" alt={item.food.name_food} />
+                                            <Image src={item.food.image} w={100} h="auto" fit="cover" alt={item.food.name_food} radius="md" />
                                         </Table.Td>
-                                        <Table.Td>{item.food.name_food}</Table.Td>
                                         <Table.Td>
-                                            <NumberInput defaultValue={item.quantity} min={1} max={100} onChange={(e) => handleChangeQuantity(e, item)} />
+                                            <h1 className="font-semibold">{item.food.name_food}</h1>
                                         </Table.Td>
-                                        <Table.Td>{item.quantity * item.food.price} kc</Table.Td>
+                                        <Table.Td>
+                                            <div className="inline-flex w-[40px] flex-col">
+                                                <button
+                                                    type="button"
+                                                    className="bg-orange-30 flex items-center justify-center rounded-t-md border border-orange-300 bg-orange-300 p-1 font-semibold text-white"
+                                                    onClick={() => handlePlusQuantity(1, item)}
+                                                >
+                                                    +
+                                                </button>
+                                                <input type="text" placeholder="55" className="form-input rounded-none px-2 text-center" min="1" max="25" readOnly value={item.quantity} />
+                                                <button
+                                                    type="button"
+                                                    className="flex items-center justify-center rounded-b-md border border-t-0 border-orange-300 bg-orange-300 p-1 font-semibold text-white"
+                                                    onClick={() => handleReduceQuantity(1, item)}
+                                                >
+                                                    -
+                                                </button>
+                                            </div>
+                                        </Table.Td>
+                                        <Table.Td>
+                                            <h1 className="font-bold">{item.quantity * item.food.price} kc</h1>
+                                        </Table.Td>
                                     </Table.Tr>
                                 ))}
                             </Table.Tbody>
                         </Table>
                     </ScrollArea>
-
                     <Button
                         fullWidth
                         variant="filled"

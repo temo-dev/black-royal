@@ -23,7 +23,7 @@ const bristoConfigSlice = createSlice({
     reducers: {
         setCurrentOrder(state, action: PayloadAction<BillingOrder>) {
             state.currentOrder = action.payload;
-            state.totalItems = action.payload.quantity;
+            state.totalItems = action.payload.totalQuantity;
         },
         setLocalMenu(state, { payload }) {
             localStorage.setItem('localMenus', JSON.stringify(payload));

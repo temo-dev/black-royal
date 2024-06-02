@@ -35,14 +35,14 @@ export class BillingOrder {
     code_order: string;
     foods: FoodOrderTypes[];
     total: number;
-    quantity: number;
+    totalQuantity: number;
     table?: string;
     constructor(code: string, id: number) {
         this.code_order = code;
         this.id = id;
         this.foods = new Array();
         this.total = 0;
-        this.quantity = 0;
+        this.totalQuantity = 0;
     }
     addFood(foodOrder: FoodOrderTypes): void {
         const isExisted = this.foods.filter((item) => item.food.id === foodOrder.food.id);
@@ -56,13 +56,13 @@ export class BillingOrder {
             this.foods.push(foodOrder);
         }
         this.total = this.total + foodOrder.quantity * foodOrder.food.price;
-        this.quantity = this.quantity + foodOrder.quantity;
+        this.totalQuantity = this.totalQuantity + foodOrder.quantity;
     }
 
     updateFood(foodOrder: FoodOrderTypes): void {
-        this.foods.map((food) => {
-            if (food.food.id === foodOrder.food.id) {
-                food.quantity = foodOrder.quantity;
+        this.foods.map((item) => {
+            if (item.food.id === foodOrder.food.id) {
+                item.food = foodOrder.food;
             }
         });
     }
