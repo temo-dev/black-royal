@@ -102,9 +102,13 @@ const Header = () => {
         paymentModel.close();
         drawedListOrdered.close();
         dispatch(resetCurrentOrder());
+        paymentDone.open();
+    };
+
+    const hanldeConfirm = () => {
         setOrder(null);
         setQuantity(0);
-        paymentDone.open();
+        paymentDone.close();
     };
 
     return (
@@ -280,7 +284,7 @@ const Header = () => {
                         variant="filled"
                         className="btn-success font-bol text-base hover:bg-green-900"
                         leftSection={<IconCircleCheckFilled style={{ width: rem(20), height: rem(20) }} />}
-                        onClick={paymentDone.close}
+                        onClick={hanldeConfirm}
                     >
                         Confirm
                     </Button>
