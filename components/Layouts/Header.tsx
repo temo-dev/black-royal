@@ -9,11 +9,12 @@ import { useTranslation } from 'react-i18next';
 import Dropdown from '../Dropdown';
 import { changeMenuByLanguage, resetCurrentOrder, setCurrentOrder } from '../../store/bristoSlice';
 import { ActionIcon, Button, Drawer, Group, Image, Indicator, Modal, ScrollArea, Stack, Table, rem } from '@mantine/core';
-import { IconBasketFilled, IconCashBanknoteFilled, IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react';
+import { IconBasketFilled, IconCashBanknoteFilled, IconCircleCheckFilled, IconCircleXFilled, IconLocationFilled } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { BillingOrder, FoodOrderTypes } from '../../types/bristo';
 import QRCode from 'react-qr-code';
 import Thankyou from '../container/Thankyou';
+import { Map, Marker, MarkerLayer, MouseControl, SyncControl, ZoomControl } from 'react-mapycz';
 
 const Header = () => {
     const router = useRouter();
@@ -21,6 +22,7 @@ const Header = () => {
     const [listOrdered, drawedListOrdered] = useDisclosure(false);
     const [paymentModelOpened, paymentModel] = useDisclosure(false);
     const [paymentDoneOpend, paymentDone] = useDisclosure(false);
+    const [localOpened, handleLocal] = useDisclosure(false);
     const [quantity, setQuantity] = useState<number>(0);
     const [order, setOrder] = useState<BillingOrder | null>(null);
 
@@ -155,10 +157,15 @@ const Header = () => {
                             </div>
                             <div>
                                 <Indicator size={!quantity ? 0 : 15} inline label={quantity} color="red">
-                                    <ActionIcon variant="light" className="text-orange-300 hover:text-orange-300" radius="xl" size={30} onClick={drawedListOrdered.open} disabled={quantity === null}>
+                                    <ActionIcon variant="light" className="text-orange-300 hover:text-orange-300" radius="xl" size={30} onClick={drawedListOrdered.open} disabled={quantity === 0}>
                                         <IconBasketFilled style={{ width: rem(36), height: rem(36) }} />
                                     </ActionIcon>
                                 </Indicator>
+                            </div>
+                            <div>
+                                <ActionIcon variant="light" className="text-orange-300 hover:text-orange-300" radius="xl" size={30} onClick={handleLocal.open}>
+                                    <IconLocationFilled style={{ width: rem(30), height: rem(30) }} />
+                                </ActionIcon>
                             </div>
                         </div>
                     </div>
@@ -277,6 +284,13 @@ const Header = () => {
                     >
                         Confirm
                     </Button>
+                </Stack>
+            </Modal>
+            <Modal opened={localOpened} onClose={handleLocal.close} title={<h1 className=" text-lg font-bold capitalize">Your Local:</h1>} radius="md">
+                <Stack>
+                    <Map height="50vh" center={{ lat: 50.0755, lng: 14.4378 }}>
+                        <ZoomControl />
+                    </Map>
                 </Stack>
             </Modal>
         </>
