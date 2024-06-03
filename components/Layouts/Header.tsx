@@ -101,13 +101,13 @@ const Header = () => {
     const hanldeOrderDone = () => {
         paymentModel.close();
         drawedListOrdered.close();
-        dispatch(resetCurrentOrder());
         paymentDone.open();
     };
 
     const hanldeConfirm = () => {
         setOrder(null);
         setQuantity(0);
+        dispatch(resetCurrentOrder());
         paymentDone.close();
     };
 
@@ -292,7 +292,7 @@ const Header = () => {
             </Modal>
             <Modal opened={localOpened} onClose={handleLocal.close} title={<h1 className=" text-lg font-bold capitalize">Your Local:</h1>} radius="md">
                 <Stack>
-                    <Map height="50vh" center={{ lat: 50.0755, lng: 14.4378 }}>
+                    <Map height="50vh" center={{ lat: 50.0755, lng: 14.4378 }} zoom={18}>
                         <ZoomControl />
                     </Map>
                 </Stack>
