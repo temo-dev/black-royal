@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ActionIcon, Card, Checkbox, Drawer, Grid, Group, Image, Stack, rem } from '@mantine/core';
 
-import React, { useEffect, useState } from 'react';
-import { BillingOrder, FoodOptionsTypes, FoodOrderTypes, FoodTypes } from '../../../types/bristo';
+import React, { useState } from 'react';
+import { FoodOptionsTypes, FoodOrderTypes, FoodTypes } from '../../../types/bristo';
 import { useDisclosure } from '@mantine/hooks';
 import { IconHeartFilled, IconSquareRoundedPlusFilled } from '@tabler/icons-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../../store';
-import { setCurrentOrder } from '../../../store/bristoSlice';
+import { useDispatch } from 'react-redux';
+import { setCurrentOrder as sendOrder } from '../../../store/bristoSlice';
 
 interface ItemCardProps {
     food: FoodTypes;
@@ -49,30 +48,16 @@ const dataOptions: FoodOptionsTypes[] = [
 const ItemCard = (props: ItemCardProps) => {
     const { food } = props;
     const dispatch = useDispatch();
-    const bristoConfig = useSelector((state: IRootState) => state.bristoConfig);
     const [optionOpened, drawedOpption] = useDisclosure(false);
-    const [currentOrder, setOrder] = useState<BillingOrder | null>(null);
     const [quantity, setQuantity] = useState(1);
-
-    useEffect(() => {
-        if (bristoConfig.currentOrder) {
-            setOrder(bristoConfig.currentOrder);
-        }
-    }, [bristoConfig.currentOrder]);
 
     const handleBillingOrder = () => {
         let currentFood: FoodOrderTypes = {
             food: food,
             quantity: quantity,
         };
-        if (currentOrder !== null) {
-            currentOrder?.addFood(currentFood);
-            dispatch(setCurrentOrder(currentOrder));
-        } else {
-            let newOrder = new BillingOrder(bristoConfig.codeOrder, bristoConfig.countNumberOrder);
-            newOrder.addFood(currentFood);
-            dispatch(setCurrentOrder(newOrder));
-        }
+        dispatch(sendOrder(currentFood));
+        setQuantity(1);
         drawedOpption.close();
     };
 

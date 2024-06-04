@@ -55,6 +55,7 @@ export class BillingOrder {
         } else {
             this.foods.push(foodOrder);
         }
+
         this.total = this.total + foodOrder.quantity * foodOrder.food.price;
         this.totalQuantity = this.totalQuantity + foodOrder.quantity;
     }

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { BillingOrder, MenuTypes } from '../types/bristo';
+import { BillingOrder, MenuTypes, FoodOrderTypes } from '../types/bristo';
 
 interface initialTypes {
     localMenus: MenuTypes[];
@@ -25,10 +25,33 @@ const bristoConfigSlice = createSlice({
             state.currentOrder = null;
             state.totalItems = 0;
         },
-        setCurrentOrder(state, action: PayloadAction<BillingOrder>) {
-            state.currentOrder = action.payload;
-            state.totalItems = action.payload.totalQuantity;
+        setCurrentOrder(state, action: PayloadAction<FoodOrderTypes>) {
+            if (state.currentOrder) {
+                state.currentOrder.addFood(action.payload);
+            } else {
+                state.currentOrder = new BillingOrder(state.codeOrder, state.countNumberOrder);
+                state.currentOrder.addFood(action.payload);
+            }
+            state.totalItems = state.totalItems + action.payload.quantity;
         },
+        updateCurrentOrder(state, action: PayloadAction<BillingOrder>) {
+            state.currentOrder = action.payload;
+        },
+
+        updateTotalitems(state, action: PayloadAction<{ code: string; number: number }>) {
+            switch (action.payload.code) {
+                case 'plus':
+                    state.totalItems += action.payload.number;
+                    break;
+                case 'reduce':
+                    state.totalItems -= action.payload.number;
+                    break;
+                default:
+                    state.totalItems = state.totalItems;
+                    break;
+            }
+        },
+
         setLocalMenu(state, { payload }) {
             localStorage.setItem('localMenus', JSON.stringify(payload));
         },
@@ -52,6 +75,6 @@ const bristoConfigSlice = createSlice({
     },
 });
 
-export const { resetCurrentOrder, setCurrentOrder, setLocalMenu, changeMenuByLanguage } = bristoConfigSlice.actions;
+export const { updateTotalitems, updateCurrentOrder, resetCurrentOrder, setCurrentOrder, setLocalMenu, changeMenuByLanguage } = bristoConfigSlice.actions;
 
 export default bristoConfigSlice.reducer;

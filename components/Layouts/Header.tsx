@@ -7,14 +7,14 @@ import { IRootState } from '../../store';
 import { toggleLocale, toggleRTL } from '../../store/themeConfigSlice';
 import { useTranslation } from 'react-i18next';
 import Dropdown from '../Dropdown';
-import { changeMenuByLanguage, resetCurrentOrder, setCurrentOrder } from '../../store/bristoSlice';
+import { changeMenuByLanguage, resetCurrentOrder, updateCurrentOrder, updateTotalitems } from '../../store/bristoSlice';
 import { ActionIcon, Button, Drawer, Group, Image, Indicator, Modal, ScrollArea, Stack, Table, rem } from '@mantine/core';
 import { IconBasketFilled, IconCashBanknoteFilled, IconCircleCheckFilled, IconCircleXFilled, IconLocationFilled } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { BillingOrder, FoodOrderTypes } from '../../types/bristo';
 import QRCode from 'react-qr-code';
 import Thankyou from '../container/Thankyou';
-import { Map, Marker, MarkerLayer, MouseControl, SyncControl, ZoomControl } from 'react-mapycz';
+import { Map, ZoomControl } from 'react-mapycz';
 
 const Header = () => {
     const router = useRouter();
@@ -85,7 +85,8 @@ const Header = () => {
             item.quantity += 1;
             order.totalQuantity += 1;
             order.total += item.food.price * e;
-            dispatch(setCurrentOrder(order));
+            dispatch(updateCurrentOrder(order));
+            dispatch(updateTotalitems({ code: 'plus', number: 1 }));
         }
     };
 
@@ -94,7 +95,8 @@ const Header = () => {
             item.quantity -= 1;
             order.totalQuantity -= 1;
             order.total -= item.food.price * e;
-            dispatch(setCurrentOrder(order));
+            dispatch(updateCurrentOrder(order));
+            dispatch(updateTotalitems({ code: 'reduce', number: 1 }));
         }
     };
 
