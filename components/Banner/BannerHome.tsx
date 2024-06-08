@@ -22,7 +22,7 @@ const BannerHome = () => {
             >
                 {[1, 2, 3, 4, 5].map((i) => (
                     <Carousel.Slide key={i}>
-                        <Image radius="md" src={`/assets/images/blackRoyal/blackroyal-${i}.jpg`} alt="blackroyal" h={200} w={370} fallbackSrc="/favicon.png" />
+                        <Image radius="md" src={`https://sawepecomcdn.blob.core.windows.net/kfc-web-ordering/CZ/KFC/2024/w3/bannery/PizzaTwisters_Action_368x196_Ver2%20(1).png`} alt="blackroyal" h={200} w={370} fallbackSrc="/favicon.png" />
                     </Carousel.Slide>
                 ))}
             </Carousel>
